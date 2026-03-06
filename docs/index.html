@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AetherBrowser | AI-First Browser Ops</title>
+  <meta name="description" content="AetherBrowser: multi-agent browser research with governance controls, streaming output, and team-ready ops lanes." />
+  <style>
+    :root { --bg:#0b1020; --card:#121a33; --ink:#edf2ff; --muted:#a6b2d9; --accent:#3ee7a8; --accent2:#4ea1ff; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family: 'Segoe UI', system-ui, sans-serif; background: radial-gradient(1200px 700px at 10% -10%, #1b2d66, var(--bg)); color:var(--ink); }
+    .wrap { max-width:1040px; margin:0 auto; padding:40px 20px 80px; }
+    .hero { display:grid; gap:16px; margin-bottom:30px; }
+    h1 { margin:0; font-size:clamp(2rem, 4.6vw, 3.4rem); line-height:1.05; }
+    p { color:var(--muted); line-height:1.5; }
+    .btns { display:flex; flex-wrap:wrap; gap:12px; margin-top:10px; }
+    .btn { display:inline-block; text-decoration:none; border-radius:12px; padding:12px 16px; font-weight:700; }
+    .btn.primary { background:var(--accent); color:#041a13; }
+    .btn.secondary { background:transparent; color:var(--ink); border:1px solid #2e3b68; }
+    .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:14px; margin:24px 0; }
+    .card { background:var(--card); border:1px solid #26345f; border-radius:16px; padding:16px; }
+    .price { font-size:1.8rem; margin:6px 0 2px; }
+    .muted { color:var(--muted); font-size:.92rem; }
+    ul { margin:10px 0 0 20px; color:#d7e0ff; }
+    .proof { margin-top:26px; padding:16px; border-radius:14px; background:#0f1730; border:1px solid #2c3b68; }
+    code { background:#0e1630; padding:2px 6px; border-radius:6px; color:#7ae0ff; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <div class="muted">AetherBrowser</div>
+      <h1>Run AI browser teams like an operations console, not a chat tab.</h1>
+      <p>AetherBrowser gives you multi-agent browser workflows with streaming responses, reconnect-safe sidepanel UX, and governance-aware routing for serious research and execution.</p>
+      <div class="btns">
+        <a class="btn primary" href="https://gumroad.com" target="_blank" rel="noreferrer">Buy Pro Access</a>
+        <a class="btn secondary" href="https://github.com/issdandavis/aetherbrowser" target="_blank" rel="noreferrer">View GitHub</a>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <div class="muted">Starter</div>
+        <div class="price">$0</div>
+        <div class="muted">Local open-core runtime</div>
+        <ul>
+          <li>Single-user sidepanel runtime</li>
+          <li>Streaming command output</li>
+          <li>Focused open test suite</li>
+        </ul>
+      </article>
+      <article class="card">
+        <div class="muted">Pro</div>
+        <div class="price">$39/mo</div>
+        <div class="muted">Best for indie operators</div>
+        <ul>
+          <li>Managed research lanes</li>
+          <li>Workflow persistence + exports</li>
+          <li>Email support + updates</li>
+        </ul>
+      </article>
+      <article class="card">
+        <div class="muted">Team</div>
+        <div class="price">$199/mo</div>
+        <div class="muted">For agencies and labs</div>
+        <ul>
+          <li>Shared queues + audit trails</li>
+          <li>Policy packs and governance controls</li>
+          <li>Priority onboarding</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="proof">
+      <strong>Proof of delivery</strong>
+      <p>Current lane includes model-provider bridge, streaming WebSocket feed, reconnect indicators, and passing focused tests. Start with <code>src/aetherbrowser/serve.py</code> and <code>src/extension/</code>.</p>
+    </section>
+  </main>
+</body>
+</html>
