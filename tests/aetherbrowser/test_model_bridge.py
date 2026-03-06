@@ -116,7 +116,7 @@ class TestProviderCaching:
     def test_provider_is_cached_on_success(self):
         mb = ModelBridge()
         mock_provider = MagicMock()
-        with patch("hydra.llm_providers.create_provider", return_value=mock_provider):
+        with patch("src.aetherbrowser.model_bridge._hydra_create_provider", return_value=mock_provider):
             with patch.dict(os.environ, {"ANTHROPIC_API_KEY": "test"}, clear=True):
                 mb._unavailable.clear()
                 mb._providers.clear()

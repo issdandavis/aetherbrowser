@@ -23,6 +23,11 @@ from src.aetherbrowser.router import ModelProvider
 
 logger = logging.getLogger("aetherbrowser.model_bridge")
 
+try:
+    from hydra.llm_providers import create_provider as _hydra_create_provider
+except Exception:
+    _hydra_create_provider = None
+
 # Map OctoArmor enum -> (llm_providers ai_type, default model)
 _PROVIDER_MAP: dict[ModelProvider, tuple[str, str]] = {
     ModelProvider.OPUS: ("claude", "claude-opus-4-20250514"),
@@ -82,8 +87,14 @@ class ModelBridge:
             return None
 
         try:
-            from hydra.llm_providers import create_provider
-            provider = create_provider(ai_type, model=model_name)
+            if _hydra_create_provider is None:
+                logger.warning(
+                    "hydra.llm_providers.create_provider unavailable in standalone mode"
+                )
+                self._unavailable.add(cache_key)
+                return None
+
+            provider = _hydra_create_provider(ai_type, model=model_name)
             self._providers[cache_key] = provider
             return provider
         except Exception as e:
