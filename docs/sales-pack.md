@@ -1,5 +1,9 @@
 # AetherBrowser Sales Pack
 
+## Live checkout links
+- Pro ($39/mo): https://buy.stripe.com/5kQ4gAggOeCr0Kk11Ydby09
+- Team ($199/mo): https://buy.stripe.com/aFacN67Ki1PF3Ww6midby0a
+
 ## One-line pitch
 AetherBrowser runs AI browser teams with governance controls, streaming output, and ops-friendly workflows.
 
