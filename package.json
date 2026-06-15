@@ -6,6 +6,6 @@
     "test:extension": "vitest run tests/extension/ws-client.test.ts"
   },
   "devDependencies": {
-    "vitest": "^4.1.2"
+    "vitest": "^4.1.9"
   }
 }
