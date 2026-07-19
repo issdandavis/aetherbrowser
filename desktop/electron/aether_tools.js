@@ -11,6 +11,8 @@
  */
 'use strict';
 
+const weightTargeting = require('./weight_targeting');  // fisheye lens: importance + proximity -> snap target
+
 const READ_PAGE_JS = `(function(){
   const SKIP=new Set(['SCRIPT','STYLE','NOSCRIPT','SVG','IFRAME']);const MAX=100000;let text='';
   const w=document.createTreeWalker(document.body||document.documentElement,NodeFilter.SHOW_TEXT,{acceptNode(n){
@@ -93,6 +95,31 @@ function register({ ipcMain, ctxFromEvent, actionGate }) {
           wc.sendInputEvent({ type: 'mouseDown', x: args.x | 0, y: args.y | 0, button: 'left', clickCount: 1 });
           wc.sendInputEvent({ type: 'mouseUp', x: args.x | 0, y: args.y | 0, button: 'left', clickCount: 1 });
           return { ok: true, x: args.x | 0, y: args.y | 0 };
+        case 'smart_click': {   // fisheye targeting: aim roughly (x,y and/or want-text), snap to the important nearby target
+          const want = String(args.want || '').toLowerCase();
+          const targets = await wc.executeJavaScript(`(function(){
+            const els=[...document.querySelectorAll('a[href],button,input[type=submit],input[type=button],[role=button],input,textarea,select,[onclick]')];
+            const want=${JSON.stringify(want)};
+            return els.map((el,i)=>{const r=el.getBoundingClientRect();if(r.width<1||r.height<1)return null;
+              const txt=((el.textContent||el.value||el.placeholder||'')+'').trim().toLowerCase();
+              let imp=(el.tagName==='BUTTON'||el.type==='submit')?0.85:el.tagName==='A'?0.5:(el.tagName==='INPUT'||el.tagName==='TEXTAREA'||el.tagName==='SELECT')?0.6:0.45;
+              if(want&&txt.includes(want))imp=Math.min(1,imp+0.4);
+              return{id:String(i),x:Math.round(r.left+r.width/2),y:Math.round(r.top+r.height/2),importance:imp,text:txt.slice(0,40)};
+            }).filter(Boolean).slice(0,80);})()`);
+          if (!targets.length) return { ok: false, error: 'no clickable targets on page' };
+          let ax = Number(args.x), ay = Number(args.y);
+          if (!Number.isFinite(ax) || !Number.isFinite(ay)) {           // no coords: aim at the best want-match / most important
+            const cands = want ? targets.filter((t) => t.text.includes(want)) : targets;
+            const c = cands.sort((a, b) => b.importance - a.importance)[0] || targets[0]; ax = c.x; ay = c.y;
+          }
+          const L = weightTargeting.lens(targets, ax, ay);
+          const snap = L.snapTarget || L.rows[0];
+          if (!snap) return { ok: false, error: 'no target captured' };
+          wc.sendInputEvent({ type: 'mouseDown', x: snap.x, y: snap.y, button: 'left', clickCount: 1 });
+          wc.sendInputEvent({ type: 'mouseUp', x: snap.x, y: snap.y, button: 'left', clickCount: 1 });
+          return { ok: true, clicked: snap.text || snap.id, at: { x: snap.x, y: snap.y },
+                   pull: Math.round(snap.pull * 1000) / 1000, size: Math.round(snap.size * 10) / 10, from_aim: { x: ax, y: ay } };
+        }
         case 'type': for (const ch of String(args.text || '')) wc.sendInputEvent({ type: 'char', keyCode: ch }); return { ok: true, typed: (args.text || '').length };
         case 'key': wc.sendInputEvent({ type: 'keyDown', keyCode: String(args.key) }); wc.sendInputEvent({ type: 'keyUp', keyCode: String(args.key) }); return { ok: true, key: args.key };
         case 'scroll': await wc.executeJavaScript(`window.scrollBy({top:${Number(args.dy || 400)},left:${Number(args.dx || 0)},behavior:'smooth'})`); return { ok: true };

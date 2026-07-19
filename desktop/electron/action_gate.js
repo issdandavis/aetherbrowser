@@ -24,7 +24,7 @@ function classify(eventName, payload = {}) {
   if (['move_up', 'move_down', 'move_left', 'move_right', 'back', 'forward', 'reload',
        'read_page', 'get_text', 'screenshot', 'console', 'network', 'find', 'tabs_list'].includes(e)) return 'READ';
   // pointer
-  if (['primary', 'secondary', 'click'].includes(e)) return 'CLICK';
+  if (['primary', 'secondary', 'click', 'smart_click'].includes(e)) return 'CLICK';
   // navigation / low-consequence control
   if (['navigate', 'scroll', 'key', 'tabs_create', 'tabs_activate', 'tabs_close'].includes(e)) return 'CONTROL';
   // typed / form input -> screen for injection/exfil markers
