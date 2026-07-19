@@ -1,0 +1,50 @@
+# --- dependencies / build output ---
+node_modules/
+**/node_modules/
+dist/
+out/
+build/
+.cache/
+*.log
+
+# --- electron / ios build artifacts ---
+ios/build/
+ios/Pods/
+ios/**/xcuserdata/
+DerivedData/
+*.xcworkspace/xcuserdata/
+
+# --- models & big binaries (kept out of git) ---
+*.gguf
+*.safetensors
+*.bin
+*.pt
+*.onnx
+*.zip
+
+# --- SECRETS / VAULT: never commit ---
+*.vault
+vault/
+**/vault/
+*.key
+*.pem
+*.p12
+*.pfx
+.env
+.env.*
+*secret*
+*_token*
+*apikey*
+.forge_receipt_key.json
+dpapi*/
+
+# --- runtime logs / recorded training faucet (regenerated) ---
+aetherbrowser-action-audit.jsonl
+aetherbrowser-trajectories.jsonl
+train/browser_sft.jsonl
+
+# --- os / python ---
+.DS_Store
+Thumbs.db
+__pycache__/
+*.pyc

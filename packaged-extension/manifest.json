@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "AetherBrowser",
+  "version": "0.2.0",
+  "description": "Multi-agent AI sidebar with governed browsing — your agents, your rules, in the browser you already use.",
+  "minimum_chrome_version": "114",
+  "permissions": ["activeTab", "sidePanel", "storage", "tabs"],
+  "host_permissions": ["http://127.0.0.1/*", "http://localhost/*"],
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "js": ["content.js"],
+    "run_at": "document_idle"
+  }],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "Open AetherBrowser",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  }
+}

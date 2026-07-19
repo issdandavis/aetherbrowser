@@ -1,0 +1,17 @@
+{
+  "name": "aetherbrowser",
+  "version": "0.1.0",
+  "description": "AetherBrowser — consolidated single-folder build (AI-governed desktop browser with multi-agent sidepanel)",
+  "author": "Issac Daniel Davis <issdandavis@gmail.com>",
+  "license": "MIT",
+  "main": "desktop/electron/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev:electron": "electron .",
+    "test:smoke": "python tests/smoke.py",
+    "test:headless": "python tests/headless_contract.py"
+  },
+  "devDependencies": {
+    "electron": "^42.4.0"
+  }
+}
