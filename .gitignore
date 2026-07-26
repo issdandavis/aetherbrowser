@@ -48,3 +48,9 @@ train/browser_sft.jsonl
 Thumbs.db
 __pycache__/
 *.pyc
+# --- added by push_dev: keep git free of regenerable + oversized artifacts ---
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
