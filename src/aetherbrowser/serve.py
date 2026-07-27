@@ -6,6 +6,10 @@ FastAPI + WebSocket entry point. The Chrome extension connects here.
 
 Start:
     python -m uvicorn src.aetherbrowser.serve:app --host 127.0.0.1 --port 8002
+or (respects the AETHERBROWSER_PORT env var, default 8002):
+    python -m src.aetherbrowser.serve
+
+The port is configurable because the SCBE GeoSeal service also defaults to 8002.
 """
 
 from __future__ import annotations
@@ -826,3 +830,11 @@ def _format_command_summary(plan: CommandPlan) -> str:
         f"Lead action: {next_action}\n"
         f"Model: {plan.provider} ({plan.selection_reason}) | Auto-cascade: {plan.auto_cascade}"
     )
+
+
+if __name__ == "__main__":  # pragma: no cover -- thin launcher; the app itself is smoke-tested
+    import os
+
+    import uvicorn
+
+    uvicorn.run(app, host="127.0.0.1", port=int(os.environ.get("AETHERBROWSER_PORT", "8002")))

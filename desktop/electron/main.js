@@ -4,7 +4,8 @@
  *
  * AetherBrowser Electron main process — MULTI-WINDOW ("agent spots").
  * Each window has its own browser pane (75%) + AI sidebar (25%). ALL sidebars
- * connect to the single shared Python backend (src.aetherbrowser.serve, port 8002),
+ * connect to the single shared Python backend (src.aetherbrowser.serve, port
+ * AETHERBROWSER_PORT, default 8002),
  * so every window/agent spot shares ONE context pool. Ctrl+N opens another spot.
  */
 
@@ -38,7 +39,9 @@ const PRELOAD_ADDRESSBAR = path.join(__dirname, 'preload-addressbar.js');
 // Backend process management (single, shared across all windows)
 // ---------------------------------------------------------------------------
 let backendProcess = null;
-const BACKEND_PORT = 8002;
+// Backend port: AETHERBROWSER_PORT env var, default 8002. Configurable because the
+// SCBE GeoSeal service also defaults to 8002 and the two collide when run together.
+const BACKEND_PORT = Number.parseInt(process.env.AETHERBROWSER_PORT, 10) || 8002;
 
 // Studio home: AetherBrowser lands on I Tube (local AI-first YouTube studio) instead of Google.
 // Override with the AETHER_HOME_URL env var. Requires the I Tube dev server running on :9002.
@@ -210,6 +213,12 @@ function createBrowserWindow() {
 // ---------------------------------------------------------------------------
 // IPC handlers — every handler resolves the SENDER'S window context.
 // ---------------------------------------------------------------------------
+
+// Sidepanel preload asks for the backend port synchronously (before the extension
+// UI boots), so ws://127.0.0.1:<port>/ws follows AETHERBROWSER_PORT inside Electron.
+ipcMain.on('get-backend-port', (event) => {
+  event.returnValue = BACKEND_PORT;
+});
 
 ipcMain.on('navigate', (event, url) => {
   const c = ctxFromEvent(event);

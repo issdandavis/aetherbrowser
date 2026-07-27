@@ -17,6 +17,16 @@
 
 const { contextBridge, ipcRenderer } = require('electron');
 
+// The main process spawns the backend on AETHERBROWSER_PORT (default 8002). Ask it
+// synchronously so the sidepanel's default port setting matches the spawned backend.
+let BACKEND_PORT = 8002;
+try {
+  const p = ipcRenderer.sendSync('get-backend-port');
+  if (Number.isInteger(p) && p > 0) BACKEND_PORT = p;
+} catch (err) {
+  console.error('[preload-sidepanel] get-backend-port failed, using 8002:', err);
+}
+
 // ---------------------------------------------------------------------------
 // chrome.storage.local — backed by localStorage
 // ---------------------------------------------------------------------------
@@ -33,6 +43,15 @@ const storageLocal = {
           } catch {
             result[key] = raw;
           }
+        }
+      }
+      // Seed the backend port into settings so the extension UI (whose own default
+      // is 8002) connects to wherever the main process actually spawned the backend.
+      // A port the user explicitly saved in settings still wins.
+      if (keyList.includes('aetherbrowser_settings')) {
+        const s = result.aetherbrowser_settings;
+        if (!s || typeof s !== 'object' || s.port === undefined) {
+          result.aetherbrowser_settings = { ...(s && typeof s === 'object' ? s : {}), port: BACKEND_PORT };
         }
       }
       if (callback) callback(result);
