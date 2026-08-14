@@ -54,7 +54,8 @@ state while the page itself must be inspected and repaired explicitly.
 - Lightning Free Studio: sustained CPU tests and common-basis evaluation
 - Lightning Sandbox: short clean-room portability test only
 - GitHub: source, CI, and immutable commit identity
-- Hugging Face: model and packet mirror
+- Hugging Face: public, secret-free packet and evidence mirror; private model
+  artifacts, if any, remain a separately governed lane
 - Kaggle: isolated notebook validation; never a competition submission here
 - Website: customer portal, entitlement/tool routing, and verified evidence
 

@@ -1,0 +1,163 @@
+{
+  "schema": "aetherbrowser.eight-hour-inventory.v1",
+  "generated_at_utc": "2026-08-14T15:16:44Z",
+  "session": {
+    "window_start_utc": "2026-08-14T07:02:00Z",
+    "window_end_utc": "2026-08-14T15:02:00Z",
+    "post_window_cleanup_checkpoint_utc": "2026-08-14T15:15:00Z"
+  },
+  "kernel": {
+    "repository": "https://github.com/issdandavis/aetherbrowser",
+    "head_before_final_evidence_commit": "c6a481b7e8c18207e7527d9a05a7b1ea605c5d11",
+    "transaction_commit": "ce32387",
+    "packet_id": "ea756662fa7f6c490b48f2d183e605a022a5609711e07ccddcd6f697282d531d",
+    "packet_sha256": "8088bc6f038a5a3f9e67416fe2aefae982ff951ee0d8938d615848913f52c598",
+    "packet_files": 21,
+    "mutation_contract": [
+      "observe",
+      "plan",
+      "approve",
+      "dispatch",
+      "verify",
+      "receipt"
+    ],
+    "durable_state_excludes": [
+      "raw_page_text",
+      "fill_values",
+      "credentials"
+    ],
+    "save_contract": {
+      "autosave_ring": 24,
+      "checkpoint_stack": 8,
+      "named_saves": true,
+      "champion_and_rollback_separate": true
+    }
+  },
+  "portal": {
+    "url": "https://aethermoore.com/AetherDesk/",
+    "repository": "https://github.com/issdandavis/AetherDesk",
+    "public_contract_commit": "7cb90becc098c9ea799e984a7217f5d059bd1ee4",
+    "installed_bridge_commit": "5cba287",
+    "github_pages": "passed",
+    "linux_ci": "passed",
+    "live_public_runtime": false,
+    "remote_writes_default": "denied",
+    "selling_enabled": false,
+    "checkout_connected": false,
+    "entitlement_connected": false,
+    "portable_release": {
+      "version": "0.1.0",
+      "files": 212,
+      "contains_browser_bridge": false,
+      "update": "pending"
+    },
+    "browser_delivery": "source_ready_portable_update_pending",
+    "public_status_sha256": "07a03c895c7fa044155fa7e5db92ce715c6ac1a185cb35e782e8994a3e5d93d9"
+  },
+  "clay": {
+    "repository_head": "26479e2e35b8d3c8dd1b7d4f6267d38ecc2e05d2",
+    "selected_parent": "run4",
+    "selection_scope": "character-form parent only",
+    "general_teacher_trained": false,
+    "common_basis": {
+      "windows": 512,
+      "decisions": 262144,
+      "common_vocabulary": 541,
+      "coverage": 0.998368,
+      "run4_minus_run3_bits_per_character": -0.2569167,
+      "run4_minus_run3_accuracy": 0.0057297
+    },
+    "teaching_corpus": {
+      "train_rows": 240,
+      "train_unique": 240,
+      "holdout_rows": 48,
+      "holdout_unique": 48,
+      "train_holdout_overlap": 0,
+      "verified_tool_receipts": 288
+    },
+    "future_training_gate": [
+      "frozen_core",
+      "input_visible_growth",
+      "three_or_more_seeds",
+      "untouched_parent",
+      "size_matched_control",
+      "task_level_holdout"
+    ]
+  },
+  "skill": {
+    "name": "clay-lightning-conveyor",
+    "vault_commit": "699864efbb376950810df20396665ca7d8912e6f",
+    "quick_validation": "passed",
+    "save_slot_selftest": "passed"
+  },
+  "verification": {
+    "local_kernel_unit": "14/14",
+    "local_http_contract": "27/27",
+    "local_smoke": "5/5",
+    "lightning_clean_room": "passed_then_deleted",
+    "kaggle_private_offline_cpu": "complete_pass",
+    "kaggle_competition_submission": false,
+    "github_aetherdesk_ci": "passed",
+    "github_aetherdesk_pages": "passed",
+    "hugging_face_dataset_card": "parsed"
+  },
+  "compute": {
+    "lightning_sandbox": {
+      "persistent": false,
+      "deleted": true,
+      "controller_active_run": null
+    },
+    "aetherdesk_known_clay_smoke": {
+      "result": "failed_missing_torch",
+      "deleted": true
+    },
+    "lightning_account_wide_inventory": {
+      "verified": false,
+      "reason": "local CLI returned HTTP 401; no credential was recovered from process memory"
+    },
+    "kaggle_kernel": "KernelWorkerStatus.COMPLETE",
+    "session_owned_processes_remaining": 0,
+    "closed_local_ports": [5718, 15718, 18002],
+    "temporary_hf_audit_copy": {
+      "source_path_absent": true,
+      "staged_batch": "20260814T144944151Z-6ebd4bc1",
+      "bytes": 284083,
+      "purged": false,
+      "reason": "purge tool parsed the UTC receipt as local time; content remains sealed and recoverable in quarantine"
+    },
+    "local_aetherdesk": {
+      "pid": 7860,
+      "port": 5717,
+      "billable_cloud_compute": false,
+      "action": "retained because it predates the bridge and belongs to the earlier session"
+    },
+    "hourly_conveyor": {
+      "pid": null,
+      "process_exited": true,
+      "cycles_completed": 5,
+      "fixed_gate_executions": 20,
+      "successful_gate_executions": 20,
+      "unique_source_fingerprints": 1,
+      "source_fingerprint": "7bb2b3d48a62b3400afe7882ce02beb4acca9f2908d2c9f304b509220fa0f174",
+      "last_finished_at_utc": "2026-08-14T15:15:44Z",
+      "all_passed": true,
+      "post_window_cleanup": "complete"
+    }
+  },
+  "mirrors": {
+    "github_source": true,
+    "hugging_face_public_dataset": "issdandavis/aetherbrowser-kernel",
+    "hugging_face_unauthenticated_download": true,
+    "hugging_face_secret_shaped_files": 0,
+    "kaggle_private_dataset": "issacizrealdavis/aetherbrowser-kernel-packet",
+    "kaggle_private_dataset_status": "ready",
+    "kaggle_private_dataset_unauthenticated_http": 403,
+    "kaggle_private_validator": "issacizrealdavis/aetherbrowser-kernel-validation"
+  },
+  "boundaries": [
+    "The website can explain, quote, and route; it cannot claim a sale or entitlement while those connections are false.",
+    "Portable v0.1.0 does not yet deliver the installed browser bridge.",
+    "Clay run4 is a selected character-form parent, not a trained general teacher.",
+    "No competition submission was made in this session."
+  ]
+}

@@ -13,7 +13,7 @@ already delivers a product.
 | AetherDesk | Local control plane, approval UI, routing, receipt display | Silently approve remote writes |
 | AetherBrowser kernel | Observe, plan, approve, dispatch, verify, receipt | Browse or mutate outside the fixed allowlist |
 | GitHub | Versioned source and reviewable history | Store runtime secrets or private training data |
-| Hugging Face | Private, content-addressed release and evidence mirror | Receive competition test data or become an undeclared inference dependency |
+| Hugging Face | Public, content-addressed, secret-free release and evidence mirror | Receive competition test data, store secrets/private data, or become an undeclared inference dependency |
 | Kaggle | Private offline CPU validation and competition-specific work in its own lane | Consume competition submission slots for infrastructure checks |
 | Lightning | Disposable compatibility checks or explicitly bounded training | Leave paid compute running after the receipt is written |
 
