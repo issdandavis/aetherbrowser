@@ -9,7 +9,10 @@
     "start": "electron .",
     "dev:electron": "electron .",
     "test:smoke": "python tests/smoke.py",
-    "test:headless": "python tests/headless_contract.py"
+    "test:headless": "python tests/headless_contract.py",
+    "test:kernel": "python tests/kernel_unit.py",
+    "test:conveyor": "python scripts/kernel_conveyor.py --once",
+    "pack:kernel": "python scripts/build_kernel_packet.py"
   },
   "devDependencies": {
     "electron": "^42.4.0"

@@ -28,6 +28,7 @@ from src.aetherbrowser.ws_feed import WsFeed, MsgType, Agent, Zone
 from src.aetherbrowser.agents import AgentSquad, TongueRole, AgentState
 from src.aetherbrowser.command_planner import CommandPlan, build_command_plan
 from src.aetherbrowser.context_pool import POOL
+from src.aetherbrowser.kernel import BrowserAgentKernel
 from src.aetherbrowser.page_analyzer import PageAnalyzer
 from src.aetherbrowser.provider_executor import ProviderExecutor
 from src.aetherbrowser.router import OctoArmorRouter
@@ -50,6 +51,7 @@ squad = AgentSquad(feed)
 analyzer = PageAnalyzer()
 router = OctoArmorRouter()
 executor = ProviderExecutor()
+kernel = BrowserAgentKernel()
 pending_zone_requests: dict[int, "PendingCommandApproval"] = {}
 pending_browser_actions: list[dict[str, Any]] = []
 pending_controller_events: list[dict[str, Any]] = []
@@ -130,6 +132,11 @@ def health():
         "agents": squad.status_snapshot(),
         "providers": router.provider_status_snapshot(),
         "executor": executor.runtime_status_snapshot(),
+        "kernel": {
+            "schema": kernel.capabilities()["schema"],
+            "receipt_chain_ok": kernel.status()["receipt_chain_ok"],
+            "receipt_count": kernel.status()["receipt_count"],
+        },
     }
 
 
@@ -172,6 +179,17 @@ def headless_capabilities():
                     "allow_approval_required": "optional bool, default false",
                     "source": "optional label for the calling agent",
                 },
+            },
+            "kernel": {
+                "capabilities": "/kernel/capabilities",
+                "status": "/kernel/status",
+                "observe": "/kernel/observe",
+                "plan": "/kernel/plan",
+                "approve": "/kernel/approve",
+                "dispatch": "/kernel/dispatch",
+                "verify": "/kernel/verify",
+                "receipts": "/kernel/receipts",
+                "saves": "/kernel/saves",
             },
             "page_context": {
                 "method": "POST",
@@ -233,6 +251,89 @@ def headless_capabilities():
             "expected_shape": "add adapters as explicit tools that call the headless contract instead of driving UI directly",
         },
     }
+
+
+@app.get("/kernel/capabilities")
+def kernel_capabilities():
+    return kernel.capabilities()
+
+
+@app.get("/kernel/status")
+def kernel_status():
+    return kernel.status()
+
+
+@app.get("/kernel/receipts")
+def kernel_receipts(limit: int = 100):
+    return {"ok": True, "receipts": kernel.receipts(limit=limit)}
+
+
+@app.get("/kernel/saves")
+def kernel_saves():
+    return {"ok": True, "saves": kernel.list_saves()}
+
+
+@app.post("/kernel/observe")
+def kernel_observe(request: dict[str, Any]):
+    source = str(request.get("source") or "headless-agent")
+    payload = request.get("observation") if isinstance(request.get("observation"), dict) else request
+    return {"ok": True, "observation": kernel.observe(payload, source=source)}
+
+
+@app.post("/kernel/plan")
+def kernel_plan(request: dict[str, Any]):
+    return kernel.plan(request)
+
+
+@app.post("/kernel/approve")
+def kernel_approve(request: dict[str, Any]):
+    return kernel.approve(
+        str(request.get("transaction_id") or ""),
+        decision=str(request.get("decision") or ""),
+        actor=str(request.get("actor") or "user"),
+    )
+
+
+@app.post("/kernel/dispatch")
+async def kernel_dispatch(request: dict[str, Any]):
+    released = kernel.dispatch(str(request.get("transaction_id") or ""))
+    if not released.get("ok"):
+        return released
+    payload = {
+        "id": str(uuid4()),
+        "transaction_id": released["transaction_id"],
+        "action": released["dispatch_action"],
+        "source": released.get("source") or "kernel",
+        "created_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+    }
+    message = {
+        "type": MsgType.BROWSER_ACTION.value,
+        "agent": Agent.SYSTEM.value,
+        "payload": payload,
+        "ts": payload["created_at"],
+    }
+    pending_browser_actions.append(payload)
+    if len(pending_browser_actions) > MAX_PENDING_BROWSER_ACTIONS:
+        del pending_browser_actions[: len(pending_browser_actions) - MAX_PENDING_BROWSER_ACTIONS]
+    await POOL.log_message(message)
+    delivered = await POOL.broadcast(message)
+    return {**released, "status": "dispatched", "delivered": delivered, "browser_action": payload}
+
+
+@app.post("/kernel/verify")
+def kernel_verify(request: dict[str, Any]):
+    result = request.get("result") if isinstance(request.get("result"), dict) else {}
+    observation = request.get("observation") if isinstance(request.get("observation"), dict) else {}
+    return kernel.verify(
+        str(request.get("transaction_id") or ""),
+        result=result,
+        observation=observation,
+    )
+
+
+@app.post("/kernel/save")
+def kernel_save(request: dict[str, Any]):
+    return kernel.save(kind=str(request.get("kind") or "named"), name=str(request.get("name") or ""))
 
 
 @app.get("/headless/browser-actions")
@@ -484,6 +585,7 @@ async def headless_page_context(payload: dict[str, Any]):
         "status": "analyzed",
         "page_analysis": analysis["result"],
         "topology": analysis["topology"],
+        "kernel_observation": analysis["kernel_observation"],
         "context": POOL.snapshot(),
     }
 
@@ -579,6 +681,10 @@ async def _analyze_page_payload(payload: dict[str, Any]) -> dict[str, Any]:
         page_type=payload.get("page_type", "generic"),
         screenshot=payload.get("screenshot", ""),
     )
+    kernel_observation = kernel.observe(
+        payload,
+        source=str(payload.get("source") or "page-context"),
+    )
     topology = compute_page_topology(
         url=url,
         title=result["title"],
@@ -606,7 +712,12 @@ async def _analyze_page_payload(payload: dict[str, Any]) -> dict[str, Any]:
         f" | Forms: {result['form_count']} | Tabs: {result['tab_count']}\n\n"
         f"{result['summary']}"
     )
-    return {"result": result, "topology": topology, "summary_text": summary_text}
+    return {
+        "result": result,
+        "topology": topology,
+        "summary_text": summary_text,
+        "kernel_observation": kernel_observation,
+    }
 
 
 def _normalize_object_list(value: Any, *, default_key: str = "value") -> list[dict[str, Any]]:
