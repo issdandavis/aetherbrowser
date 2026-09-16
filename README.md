@@ -11,7 +11,21 @@ AI-first browser runtime and extension extracted from SCBE-AETHERMOORE.
 - Streaming model bridge + provider fallback
 - Research routing lane with persistence hooks
 - WebSocket reconnect indicator + queue pressure handling
-- Targeted tests passing in source monorepo lane
+- Standalone CI checks the Python runtime and extension reconnect behavior
+
+## Development checks
+
+Use Python 3.12 and Node.js 24 (the CI versions). The extension test runner
+requires Node.js 22.12+, 24, or 26+; Node.js 20 is not supported.
+
+```sh
+npm ci
+npm run test:extension
+python -m pip install pytest pytest-asyncio fastapi uvicorn httpx websockets pydantic
+python -m pytest -q tests/aetherbrowser/test_model_bridge.py tests/aetherbrowser/test_serve.py tests/test_native_messaging_host.py
+```
+
+`npm ci` uses the committed lockfile so local and CI dependency versions agree.
 
 ## Monetization direction
 - Open-core browser runtime (public)
@@ -28,7 +42,7 @@ AI-first browser runtime and extension extracted from SCBE-AETHERMOORE.
 - URL after Pages is enabled in repo settings: `https://issdandavis.github.io/aetherbrowser/`
 
 ## Immediate roadmap
-1. Stabilize standalone CI in this repo.
+1. Expand standalone runtime and extension test coverage.
 2. Publish prebuilt extension package.
 3. Add hosted API + paid plans.
 4. Add docs and demo videos for conversion.
