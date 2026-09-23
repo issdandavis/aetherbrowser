@@ -9,7 +9,7 @@
     "test:extension": "vitest run tests/extension/ws-client.test.ts"
   },
   "devDependencies": {
-    "vitest": "^5.0.0"
+    "vitest": "^5.0.1"
   },
   "overrides": {
     "brace-expansion@1": "^1.1.18",
