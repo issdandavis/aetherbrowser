@@ -1,0 +1,63 @@
+{
+  "schema_version": "aether.apps.v1",
+  "apps": [
+    {
+      "id": "clay-world",
+      "name": "Clay World",
+      "category": "learning-assistant",
+      "description": "Clay's private, self-hosted chat, memory, tools, and progression world.",
+      "route": {
+        "kind": "web",
+        "default_url": "http://127.0.0.1:8792/",
+        "url_env": "CLAY_WORLD_URL"
+      },
+      "source_repository": "https://github.com/issdandavis/clay",
+      "status": "connected-local-service"
+    },
+    {
+      "id": "parcel-study",
+      "name": "Parcel Study",
+      "category": "study-workspace",
+      "description": "Offline-first notes, lessons, handwriting, math practice, and study exports.",
+      "route": {
+        "kind": "web",
+        "default_url": "http://127.0.0.1:8765/",
+        "url_env": "PARCEL_STUDY_URL"
+      },
+      "status": "connected-local-service"
+    },
+    {
+      "id": "clay-code-builder",
+      "name": "Clay Code Builder",
+      "category": "coding-tutor",
+      "description": "A Watch, Copy, Change, Recall, Build coding workspace with Clay tutoring.",
+      "route": {
+        "kind": "web",
+        "default_url": "http://127.0.0.1:5173/",
+        "url_env": "CLAY_CODE_BUILDER_URL"
+      },
+      "source_repository": "https://github.com/issdandavis/clay",
+      "status": "connected-local-service"
+    },
+    {
+      "id": "aetherdesk",
+      "name": "AetherDesk",
+      "category": "control-plane",
+      "description": "The local approval, routing, and receipt surface for Aether products.",
+      "route": {
+        "kind": "connected"
+      },
+      "status": "desktop-product"
+    },
+    {
+      "id": "claymail",
+      "name": "ClayMail",
+      "category": "communication",
+      "description": "A local-first email triage, drafting, privacy, and delivery toolkit.",
+      "route": {
+        "kind": "connected"
+      },
+      "status": "standalone-product"
+    }
+  ]
+}

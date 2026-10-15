@@ -44,6 +44,11 @@ def request_json(path, payload=None):
         return json.loads(response.read())
 
 
+def request_text(path):
+    with urllib.request.urlopen(BASE + path, timeout=15) as response:
+        return response.read().decode("utf-8")
+
+
 def wait_for_backend():
     for _ in range(40):
         try:
@@ -87,6 +92,22 @@ def main():
             "headless-http" in capabilities.get("surfaces", []),
             str(capabilities.get("surfaces")),
         )
+
+        apps = request_json("/apps")
+        app_ids = {item.get("id") for item in apps.get("apps", [])}
+        check(
+            "app catalog exposes Clay, Parcel, and Code Builder",
+            {"clay-world", "parcel-study", "clay-code-builder"} <= app_ids,
+            str(sorted(app_ids)),
+        )
+        connected = {item.get("id"): item for item in apps.get("apps", [])}
+        check(
+            "desktop-only products are registered without fake web routes",
+            connected.get("aetherdesk", {}).get("launchable") is False
+            and connected.get("claymail", {}).get("launchable") is False,
+        )
+        app_home = request_text("/apps/home")
+        check("app home renders reviewed products", "Clay World" in app_home and "Parcel Study" in app_home)
 
         page = request_json(
             "/headless/page-context",

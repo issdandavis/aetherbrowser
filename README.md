@@ -101,6 +101,18 @@ GET  /health
 WS   /ws
 ```
 
+### Aether Apps
+
+The **Apps** button opens a local product shelf backed by `config/aether_apps.json`.
+It includes reviewed routes for Clay World, Parcel Study, and Clay Code Builder,
+and registers AetherDesk and ClayMail without inventing browser routes for them.
+The shelf only navigates to HTTP(S) addresses; it never starts a process or runs a
+local command. Override service addresses with `CLAY_WORLD_URL`,
+`PARCEL_STUDY_URL`, or `CLAY_CODE_BUILDER_URL`.
+
+Agents can read the same catalog through `GET /apps`; the human page is
+`GET /apps/home`.
+
 Default policy: read-only planning and answering can run headless. Credential,
 payment, publish, delete, submit, and unclear state-changing browser actions are
 held for review unless the caller explicitly opts into that risk.
@@ -127,6 +139,7 @@ backend URL to the Windows machine LAN IP.
 ```powershell
 npm run test:smoke
 npm run test:headless
+npm run test:apps
 ```
 
 ## Notes

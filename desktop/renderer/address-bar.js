@@ -10,6 +10,7 @@ const urlInput = document.getElementById('url-input');
 const btnBack = document.getElementById('btn-back');
 const btnForward = document.getElementById('btn-forward');
 const btnReload = document.getElementById('btn-reload');
+const btnApps = document.getElementById('btn-apps');
 
 // Default search engine — DuckDuckGo (no API key needed, privacy-first)
 const SEARCH_URL = 'https://duckduckgo.com/?q=';
@@ -71,6 +72,10 @@ btnForward.addEventListener('click', () => {
 
 btnReload.addEventListener('click', () => {
   window.addressBarBridge.reload();
+});
+
+btnApps.addEventListener('click', () => {
+  window.addressBarBridge.openApps();
 });
 
 // ---------------------------------------------------------------------------
