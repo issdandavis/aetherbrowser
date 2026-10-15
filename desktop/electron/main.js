@@ -240,6 +240,11 @@ ipcMain.on('reload', (event) => {
   if (c && c.browserView) c.browserView.webContents.reload();
 });
 
+ipcMain.on('open-app-home', (event) => {
+  const c = ctxFromEvent(event);
+  if (c && c.browserView) c.browserView.webContents.loadURL(`http://127.0.0.1:${BACKEND_PORT}/apps/home`);
+});
+
 // Open another agent spot (new window) — shares the same backend context pool.
 ipcMain.on('new-agent-window', () => {
   createBrowserWindow();

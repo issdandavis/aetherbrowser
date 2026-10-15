@@ -21,6 +21,9 @@ contextBridge.exposeInMainWorld('addressBarBridge', {
   reload() {
     ipcRenderer.send('reload');
   },
+  openApps() {
+    ipcRenderer.send('open-app-home');
+  },
   onNavigationUpdate(callback) {
     ipcRenderer.on('navigation-update', (_event, data) => callback(data));
   },

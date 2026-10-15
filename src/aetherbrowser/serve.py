@@ -23,7 +23,9 @@ from uuid import uuid4
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 
+from src.aetherbrowser.app_catalog import load_apps, render_app_home
 from src.aetherbrowser.ws_feed import WsFeed, MsgType, Agent, Zone
 from src.aetherbrowser.agents import AgentSquad, TongueRole, AgentState
 from src.aetherbrowser.command_planner import CommandPlan, build_command_plan
@@ -153,6 +155,18 @@ def context():
     return POOL.snapshot()
 
 
+@app.get("/apps")
+def apps_catalog():
+    """Return the reviewed product catalog without starting local processes."""
+    return {"ok": True, "apps": load_apps()}
+
+
+@app.get("/apps/home", response_class=HTMLResponse)
+def apps_home():
+    """Human-facing local product shelf used by the Electron Apps button."""
+    return HTMLResponse(render_app_home(load_apps()))
+
+
 @app.get("/headless/capabilities")
 def headless_capabilities():
     """
@@ -166,6 +180,8 @@ def headless_capabilities():
         "backend": {
             "health": "/health",
             "context": "/context",
+            "apps": "/apps",
+            "apps_home": "/apps/home",
             "websocket": "/ws",
         },
         "headless": {
