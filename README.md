@@ -7,6 +7,11 @@ AI-first browser runtime and extension extracted from SCBE-AETHERMOORE.
 - Browser extension UI (`src/extension`)
 - Focused tests for runtime + extension edge cases (`tests/`)
 
+## Documentation
+
+- [Runtime flows and development procedure](docs/runtime-flows.md): sidebar/server message paths, standalone integration limits, startup and troubleshooting.
+- [Sales pack](docs/sales-pack.md)
+
 ## Current status
 - Streaming model bridge + provider fallback
 - Research routing lane with persistence hooks
