@@ -5,6 +5,7 @@ dist/
 out/
 build/
 .cache/
+.runtime/
 *.log
 
 # --- electron / ios build artifacts ---
